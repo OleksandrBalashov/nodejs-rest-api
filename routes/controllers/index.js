@@ -1,5 +1,3 @@
-const productsActions = require('./controllers');
+const productsCtrl = require('./controllers');
 
-module.exports = {
-  productsActions,
-};
+module.exports = productsCtrl;

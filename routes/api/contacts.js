@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { productsActions } = require('../controllers');
-const { validate } = require('../validateFrom');
+const productsCtrl = require('../controllers');
+const { validateForm, validateUpdate } = require('../validate/validate');
 
-router.get('/', productsActions.getAll);
+router.get('/', productsCtrl.getAll);
 
-router.get('/:contactId', productsActions.getById);
+router.get('/:contactId', productsCtrl.getById);
 
-router.post('/', validate.validateForm, productsActions.add);
+router.post('/', validateForm, productsCtrl.add);
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' });
-});
+router.delete('/:contactId', productsCtrl.remove);
 
-router.patch('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' });
-});
+router.patch('/:contactId', validateUpdate, productsCtrl.patch);
 
 module.exports = router;
