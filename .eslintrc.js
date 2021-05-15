@@ -3,6 +3,7 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    semicolon: 'on',
   },
   extends: ['standard'],
   parserOptions: {
@@ -11,6 +12,5 @@ module.exports = {
   rules: {
     'comma-dangle': 'off',
     'space-before-function-paren': 'off',
-    semicolon: 'on',
   },
 };
