@@ -6,13 +6,20 @@ const {
   updateContact,
 } = require('../../model/index');
 
-const getAll = async (req, res, next) => {
+const getAll = async (_, res, next) => {
   try {
     const contacts = await listContacts();
 
-    res.status(200).send(contacts);
+    res.json({
+      status: 'success',
+      code: 200,
+      data: { contacts },
+    });
   } catch (err) {
-    throw err;
+    err.message = 'Not found';
+    err.code = 404;
+
+    next(err);
   }
 };
 
@@ -21,28 +28,51 @@ const getById = async (req, res, next) => {
     const { contactId } = req.params;
     const contact = await getContactById(Number(contactId));
 
-    if (!contact) throw new Error();
+    if (!contact) {
+      return res.status(404).json({
+        status: 'error',
+        code: 404,
+        message: 'Not found',
+      });
+    }
 
-    res.status(200).json(contact);
+    res.json({
+      status: 'success',
+      code: 200,
+      data: { contact },
+    });
   } catch (err) {
-    res.status(404).json({ message: 'Not found' });
+    err.message = 'Not found';
+    err.code = 404;
+
+    next(err);
   }
 };
 
 const add = async (req, res, next) => {
   try {
     const contacts = await listContacts();
+    const total = contacts.length;
+
+    const { body } = req;
 
     const newContact = {
-      id: contacts.length + 1,
-      ...req.body,
+      id: total + 1,
+      ...body,
     };
 
     addContact(newContact);
 
-    res.status(201).json(newContact);
+    res.status(201).json({
+      status: 'success',
+      code: 201,
+      data: { newContact },
+    });
   } catch (err) {
-    res.status(400).json({ message: 'missing required name field' });
+    err.code = 400;
+    err.message = 'missing required name field';
+
+    next(err);
   }
 };
 
@@ -56,9 +86,16 @@ const remove = async (req, res, next) => {
 
     removeContact(contactId);
 
-    res.status(200).json({ message: 'contact deleted' });
+    res.status(204).json({
+      status: 'success',
+      code: 204,
+      message: 'contact deleted',
+    });
   } catch (err) {
-    res.status(404).json({ message: 'contact not found' });
+    err.code = 404;
+    err.message = 'contact not found';
+
+    next(err);
   }
 };
 
@@ -74,9 +111,16 @@ const patch = async (req, res, next) => {
 
     updateContact(contactId, newContact);
 
-    res.status(200).json(newContact);
+    res.json({
+      status: 'success',
+      code: 200,
+      data: { newContact },
+    });
   } catch (err) {
-    res.status(404).json({ message: 'Not found' });
+    err.message = 'Not found';
+    err.code = 404;
+
+    next(err);
   }
 };
 
