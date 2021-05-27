@@ -1,19 +1,17 @@
-const {
-  listContacts,
-  getContactById,
-  addContact,
-  removeContact,
-  updateContact,
-} = require('../../model/index');
+const { Contact } = require('../../model');
 
 const getAll = async (_, res, next) => {
   try {
-    const contacts = await listContacts();
+    const result = await Contact.find({});
+
+    if (!result) {
+      throw new Error();
+    }
 
     res.json({
       status: 'success',
       code: 200,
-      data: { contacts },
+      data: { result },
     });
   } catch (err) {
     err.message = 'Not found';
@@ -25,8 +23,9 @@ const getAll = async (_, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    const { contactId } = req.params;
-    const contact = await getContactById(Number(contactId));
+    const { contactId: _id } = req.params;
+
+    const contact = await Contact.findById({ _id });
 
     if (!contact) {
       return res.status(404).json({
@@ -51,22 +50,18 @@ const getById = async (req, res, next) => {
 
 const add = async (req, res, next) => {
   try {
-    const contacts = await listContacts();
-    const total = contacts.length;
-
     const { body } = req;
 
-    const newContact = {
-      id: total + 1,
-      ...body,
-    };
+    const result = await Contact.create({ ...body });
 
-    addContact(newContact);
+    if (!result) {
+      throw new Error();
+    }
 
     res.status(201).json({
       status: 'success',
       code: 201,
-      data: { newContact },
+      data: { result },
     });
   } catch (err) {
     err.code = 400;
@@ -78,13 +73,11 @@ const add = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const contactId = Number(req.params.contactId);
+    const { contactId: _id } = req.params;
 
-    const contact = await getContactById(contactId);
+    const contact = await Contact.findByIdAndRemove({ _id });
 
     if (!contact) throw new Error();
-
-    removeContact(contactId);
 
     res.json({
       status: 'success',
