@@ -23,9 +23,9 @@ const getAll = async (_, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    const { contactId: _id } = req.params;
+    const { contactId } = req.params;
 
-    const contact = await Contact.findById({ _id });
+    const contact = await Contact.findById(contactId);
 
     if (!contact) {
       return res.status(404).json({
