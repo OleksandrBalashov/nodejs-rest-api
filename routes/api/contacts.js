@@ -11,6 +11,12 @@ router.post('/', validateForm, productsCtrl.add);
 
 router.delete('/:contactId', productsCtrl.remove);
 
-router.patch('/:contactId', validateUpdate, productsCtrl.patch);
+router.put('/:contactId', validateUpdate, productsCtrl.put);
+
+router.patch(
+  '/:contactId/favorite',
+  validateUpdate,
+  productsCtrl.updateStatusContact
+);
 
 module.exports = router;

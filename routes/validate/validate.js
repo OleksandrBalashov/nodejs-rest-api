@@ -5,6 +5,7 @@ const validateForm = (req, _, next) => {
     name: Joi.string().required(),
     email: Joi.string().required(),
     phone: Joi.string().required(),
+    favorite: Joi.boolean().default(false),
   });
 
   const validContact = isValidContact.validate(req.body);
