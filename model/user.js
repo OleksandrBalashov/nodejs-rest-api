@@ -1,4 +1,4 @@
-const { Schema, model, SchemaTypes } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = Schema({
@@ -20,17 +20,13 @@ const userSchema = Schema({
     type: String,
     default: null,
   },
-  owner: {
-    type: SchemaTypes.ObjectId,
-    ref: 'user',
-  },
 });
 
 userSchema.methods.setPassword = function (password) {
   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 };
 
-userSchema.validPAssword = function (password) {
+userSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 

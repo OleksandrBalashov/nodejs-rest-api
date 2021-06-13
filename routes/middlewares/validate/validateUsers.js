@@ -6,6 +6,9 @@ const validateForm = (req, _, next) => {
   const isValidContact = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
+    subscription: Joi.string(),
+    token: Joi.string(),
+    owner: Joi.string(),
   });
 
   const validContact = isValidContact.validate(body);

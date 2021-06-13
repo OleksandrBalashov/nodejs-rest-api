@@ -1,6 +1,7 @@
 const { contacts: services } = require('../../services');
 
 const add = async (req, res, next) => {
+  console.log('add contact', req.body);
   try {
     const { body } = req;
 

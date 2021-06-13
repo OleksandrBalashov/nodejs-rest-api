@@ -1,14 +1,14 @@
-const User = require('../model');
+const { User } = require('../model');
 
-const findUser = (email) => {
-  return User.findOne(email);
+const findUser = (filter) => {
+  return User.findOne(filter);
 };
 
 const addUser = ({ email, password }) => {
   const newUser = new User({ email });
   newUser.setPassword(password);
 
-  return newUser.create({ email, password });
+  return newUser.save();
 };
 
 module.exports = {
