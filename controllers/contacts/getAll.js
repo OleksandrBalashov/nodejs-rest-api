@@ -1,8 +1,10 @@
-const { services } = require('../../services');
+const { contacts: services } = require('../../services');
 
-const getAll = async (_, res, next) => {
+const getAll = async (req, res, next) => {
+  const { query } = req;
+
   try {
-    const result = await services.getAll({});
+    const result = await services.getAll(query);
 
     if (!result) {
       throw new Error();

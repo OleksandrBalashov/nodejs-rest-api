@@ -1,7 +1,9 @@
 const { Contact } = require('../model');
 
-const getAll = (obj) => {
-  return Contact.find({});
+const getAll = ({ page, limit, favorite }) => {
+  const options = page && limit ? { page, limit } : { pagination: false };
+  const obj = favorite ? { favorite } : {};
+  return Contact.paginate(obj, options);
 };
 
 const add = (body) => {
