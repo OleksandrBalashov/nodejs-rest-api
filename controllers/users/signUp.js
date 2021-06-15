@@ -1,13 +1,12 @@
-const { User } = require('../../model');
 const { users: services } = require('../../services');
 
 const signUp = async (req, res, next) => {
   const { body } = req;
 
   try {
-    const user = await services.findUser({ email: body.email });
+    const result = await services.findUser({ email: body.email });
 
-    if (user) {
+    if (result) {
       return res.status(409).json({
         status: 'error',
         code: 409,
@@ -15,7 +14,7 @@ const signUp = async (req, res, next) => {
       });
     }
 
-    const { email, subscription } = await services.addUser(body);
+    const { email, subscription, avatarURL } = await services.addUser(body);
 
     res.status(201).json({
       status: 'success',
@@ -24,6 +23,7 @@ const signUp = async (req, res, next) => {
         user: {
           email,
           subscription,
+          avatarURL,
         },
       },
       message: 'user add',

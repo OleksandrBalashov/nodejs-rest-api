@@ -9,6 +9,7 @@ const validateForm = (req, _, next) => {
     subscription: Joi.string(),
     token: Joi.string(),
     owner: Joi.string(),
+    avatarURL: Joi.string(),
   });
 
   const validContact = isValidContact.validate(body);
