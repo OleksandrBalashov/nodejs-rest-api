@@ -1,5 +1,4 @@
 const { users: services } = require('../../services');
-const gravatar = require('gravatar');
 
 const signUp = async (req, res, next) => {
   const { body } = req;
@@ -14,8 +13,6 @@ const signUp = async (req, res, next) => {
         message: 'Email in use',
       });
     }
-
-    body.avatarURL = gravatar.profile_url(body.email);
 
     const { email, subscription, avatarURL } = await services.addUser(body);
 
