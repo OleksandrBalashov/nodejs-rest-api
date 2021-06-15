@@ -4,9 +4,9 @@ const { usersCtrl } = require('../../controllers');
 const { users: validate } = require('../middlewares/validate');
 const { auth, upload } = require('../middlewares/auth');
 
-router.post('/signup', validate.validateFormSignUp, usersCtrl.signUp);
+router.post('/signup', validate.validateForm, usersCtrl.signUp);
 
-router.post('/signin', validate.validateFormSignIn, usersCtrl.signIn);
+router.post('/signin', validate.validateForm, usersCtrl.signIn);
 
 router.post('/logout', auth, usersCtrl.signOut);
 
@@ -16,10 +16,6 @@ router.patch('/', auth, validate.validateFieldSubscr, usersCtrl.patchSubscr);
 
 router.patch('/avatars', auth, upload.single('avatar'), usersCtrl.avatars);
 
-router.get(
-  '/users/verify/:verificationToken',
-  auth,
-  usersCtrl.verificationToken
-);
+router.get('/verify/:verificationToken', usersCtrl.verificationToken);
 
 module.exports = router;

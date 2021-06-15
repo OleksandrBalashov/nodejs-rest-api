@@ -1,7 +1,6 @@
 const { users: services } = require('../../services');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { User } = require('../../model');
 
 const signIn = async (req, res, next) => {
   const { email, password } = req.body;
@@ -10,10 +9,18 @@ const signIn = async (req, res, next) => {
     const user = await services.findUser({ email });
 
     if (!user || !user.validPassword(password)) {
-      res.status(400).json({
+      return res.status(401).json({
         status: 'error',
         code: 401,
         message: 'Email or password is wrong',
+      });
+    }
+
+    if (!user.valid) {
+      return res.status(404).json({
+        status: 'error',
+        code: 404,
+        message: 'User not found',
       });
     }
 

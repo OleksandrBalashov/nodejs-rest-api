@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const validateFormSignUp = (req, _, next) => {
+const validateForm = (req, _, next) => {
   const { body } = req;
 
   const isValidUser = Joi.object({
@@ -11,30 +11,6 @@ const validateFormSignUp = (req, _, next) => {
     owner: Joi.string(),
     avatarURL: Joi.string(),
     verify: Joi.boolean(),
-    verifyToken: Joi.string(),
-  });
-
-  const validUser = isValidUser.validate(body);
-
-  if (validUser.error) {
-    validUser.error.code = 400;
-    return next(validUser.error);
-  }
-
-  next();
-};
-
-const validateFormSignIn = (req, _, next) => {
-  const { body } = req;
-
-  const isValidUser = Joi.object({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
-    subscription: Joi.string(),
-    token: Joi.string(),
-    owner: Joi.string(),
-    avatarURL: Joi.string(),
-    verify: Joi.boolean().valid(true).required(),
     verifyToken: Joi.string(),
   });
 
@@ -66,7 +42,6 @@ const validateFieldSubscr = (req, _, next) => {
 };
 
 module.exports = {
-  validateFormSignUp,
-  validateFormSignIn,
+  validateForm,
   validateFieldSubscr,
 };
