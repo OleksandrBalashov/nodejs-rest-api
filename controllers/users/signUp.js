@@ -1,4 +1,6 @@
 const { users: services } = require('../../services');
+const sgMail = require('@sendgrid/mail');
+const { createMail } = require('../../utils');
 
 const signUp = async (req, res, next) => {
   const { body } = req;
@@ -14,7 +16,15 @@ const signUp = async (req, res, next) => {
       });
     }
 
-    const { email, subscription, avatarURL } = await services.addUser(body);
+    const { email, subscription, avatarURL, verify, verifyToken } =
+      await services.addUser(body);
+
+    const mail = createMail(email, verifyToken);
+
+    sgMail
+      .send(mail)
+      .then(() => console.log('email send'))
+      .catch(error => console.log(error.message));
 
     res.status(201).json({
       status: 'success',
@@ -24,9 +34,11 @@ const signUp = async (req, res, next) => {
           email,
           subscription,
           avatarURL,
+          verify,
+          verifyToken,
         },
       },
-      message: 'user add',
+      message: 'user create',
     });
   } catch (error) {
     next(error);
