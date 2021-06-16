@@ -4,7 +4,7 @@ require('dotenv').config();
 const { SENDGRID_API_KEY } = process.env;
 sgMail.setApiKey(SENDGRID_API_KEY);
 
-const createMail = (address, verifyToken) => {
+const createMailToSignUp = (address, verifyToken) => {
   const mail = {
     to: address,
     from: 'aleksandr.balashov.sax@gmail.com',
@@ -20,4 +20,4 @@ const createMail = (address, verifyToken) => {
   return mail;
 };
 
-module.exports = createMail;
+module.exports = createMailToSignUp;

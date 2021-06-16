@@ -1,4 +1,4 @@
-const createMail = require('./createMail');
+const createMail = require('./createMails');
 
 module.exports = {
   createMail,

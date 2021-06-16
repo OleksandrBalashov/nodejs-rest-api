@@ -41,7 +41,25 @@ const validateFieldSubscr = (req, _, next) => {
   next();
 };
 
+const validateEmailForVerify = (req, res, next) => {
+  const { body } = req;
+
+  const isValidEmail = Joi.object({
+    email: Joi.string().required(),
+  });
+
+  const validEmail = isValidEmail.validate(body);
+
+  if (validEmail.error) {
+    validEmail.error.code = 400;
+    return next(validEmail.error);
+  }
+
+  next();
+};
+
 module.exports = {
   validateForm,
   validateFieldSubscr,
+  validateEmailForVerify,
 };
